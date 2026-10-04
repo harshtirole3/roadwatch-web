@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1110">
+    <meta name="description" content="Roadwatch checks for prolonged eye closure using on-device face tracking.">
+    <title>Roadwatch — Driver Awareness</title>
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="/app.js?v=2"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Roadwatch home">roadwatch<span>.</span></a>
+      <div class="privacy"><i></i> ON-DEVICE PROCESSING</div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">DRIVER AWARENESS SYSTEM</p>
+          <h1>Eyes on the road.<br>We’ve got your back.</h1>
+          <p class="lede">Real-time face tracking with voice alerts when your eyes need a break.</p>
+        </div>
+        <div class="session" id="session-status"><i></i><span>SYSTEM STANDBY</span></div>
+      </section>
+
+      <section class="dashboard" aria-label="Driver monitoring dashboard">
+        <article class="card camera-card">
+          <div class="card-heading">
+            <div><p class="eyebrow">LIVE MONITOR</p><h2>Driver camera</h2></div>
+            <span class="live-state" id="live-state"><i></i> OFFLINE</span>
+          </div>
+          <div class="camera-stage" id="camera-stage">
+            <video id="camera" autoplay playsinline muted></video>
+            <canvas id="overlay" aria-hidden="true"></canvas>
+            <div class="camera-placeholder" id="camera-placeholder">
+              <span class="camera-icon">▧</span>
+              <strong>Your camera view lives here</strong>
+              <span>Start a session to enable face tracking.</span>
+            </div>
+            <div class="feed-stamp"><i></i> LOCAL FEED <b>/</b> NO RECORDING</div>
+            <div class="face-badge" id="face-badge"><i></i> FACE MESH</div>
+          </div>
+          <div class="camera-controls">
+            <p id="camera-message">Position your face in the frame to begin.</p>
+            <button class="button primary" id="start-button" type="button">▶&nbsp; Start monitoring <span>↗</span></button>
+            <button class="button stop" id="stop-button" type="button" hidden>■&nbsp; Stop monitoring <span>×</span></button>
+          </div>
+          <p class="error-message" id="error-message" role="status" aria-live="polite" hidden></p>
+        </article>
+
+        <aside class="card insight-card">
+          <div class="card-heading"><div><p class="eyebrow">YOUR STATUS</p><h2>Stay sharp</h2></div><span class="spark">✳</span></div>
+          <section class="attention" id="attention-panel">
+            <div class="attention-top"><span>ATTENTION</span><i id="attention-dot"></i></div>
+            <h3 id="attention-title">Ready when you are</h3>
+            <p id="attention-copy">Start monitoring to see your live status.</p>
+            <div class="meter"><span id="attention-meter"></span></div>
+            <div class="meter-labels"><span>NEEDS ATTENTION</span><span>FOCUSED</span></div>
+          </section>
+          <section class="metric">
+            <span class="metric-icon">◉</span><div><small>EYE STATUS</small><strong id="eye-value">—</strong></div><span class="metric-state" id="eye-state">WAITING</span>
+          </section>
+          <section class="metric">
+            <span class="metric-icon">◎</span><div><small>FACE TRACKING</small><strong id="face-value">Inactive</strong></div><span class="metric-state" id="tracking-state">OFF</span>
+          </section>
+          <section class="voice">
+            <div><small>VOICE ALERTS</small><strong id="voice-status">Ready to speak</strong></div>
+            <button class="button test" id="test-button" type="button">TEST</button>
+          </section>
+          <p class="privacy-note"><span>▣</span> Your camera stays on this device. Nothing is saved or sent.</p>
+        </aside>
+      </section>
+
+      <p class="safety-note">* A helpful driving companion, not a replacement for rest or safe driving.</p>
+    </main>
+    <footer><span>ROADWATCH / DRIVER AWARENESS</span><span>DEMO EXPERIENCE · NOT A CERTIFIED SAFETY SYSTEM</span></footer>
+  </body>
+</html>
