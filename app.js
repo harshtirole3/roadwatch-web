@@ -109,18 +109,46 @@ function drawConnections(landmarks, connections) {
   context.stroke();
 }
 
-function drawFace(landmarks) {
+function drawFace(landmarks, now) {
   context.clearRect(0, 0, canvas.width, canvas.height);
+  const pulse = 0.5 + Math.sin(now / 650) * 0.5;
+  const faceGradient = context.createLinearGradient(
+    canvas.width * 0.22,
+    canvas.height * 0.12,
+    canvas.width * 0.78,
+    canvas.height * 0.92,
+  );
+  faceGradient.addColorStop(0, "#43f5e8");
+  faceGradient.addColorStop(0.48, "#83a8ff");
+  faceGradient.addColorStop(1, "#d78bff");
+
   context.save();
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.strokeStyle = "rgba(196, 243, 107, 0.30)";
-  context.lineWidth = Math.max(0.65, canvas.width / 1280);
+  context.globalAlpha = 0.2 + pulse * 0.12;
+  context.strokeStyle = faceGradient;
+  context.lineWidth = Math.max(0.7, canvas.width / 1150);
   drawConnections(landmarks, faceMeshConnections);
 
-  context.strokeStyle = "#c4f36b";
-  context.lineWidth = Math.max(1.5, canvas.width / 640);
+  context.globalAlpha = 0.34 + pulse * 0.12;
+  context.strokeStyle = "#63f3ec";
+  context.lineWidth = Math.max(4, canvas.width / 190);
+  context.shadowBlur = 18 + pulse * 8;
+  context.shadowColor = "#56e8ff";
   drawConnections(landmarks, faceOvalConnections);
+
+  context.globalAlpha = 0.92;
+  context.strokeStyle = faceGradient;
+  context.lineWidth = Math.max(1.8, canvas.width / 480);
+  context.shadowBlur = 5 + pulse * 5;
+  context.shadowColor = "#77dfff";
+  drawConnections(landmarks, faceOvalConnections);
+
+  context.shadowBlur = 8;
+  context.shadowColor = "#d58bff";
+  context.strokeStyle = "#c49bff";
+  context.fillStyle = "rgba(75, 221, 255, 0.10)";
+  context.lineWidth = Math.max(1.5, canvas.width / 600);
   for (const contour of EYE_CONTOURS) {
     context.beginPath();
     contour.forEach((index, offset) => {
@@ -131,7 +159,25 @@ function drawFace(landmarks) {
       else context.lineTo(x, y);
     });
     context.closePath();
+    context.fill();
     context.stroke();
+  }
+
+  context.shadowBlur = 0;
+  const accentRadius = Math.max(1.5, canvas.width / 430);
+  context.globalAlpha = 0.62 + pulse * 0.3;
+  for (const index of [10, 1, 33, 263, 61, 291, 152]) {
+    const point = landmarks[index];
+    context.beginPath();
+    context.arc(
+      point.x * canvas.width,
+      point.y * canvas.height,
+      accentRadius * (0.85 + pulse * 0.2),
+      0,
+      Math.PI * 2,
+    );
+    context.fillStyle = index === 1 ? "#ffffff" : faceGradient;
+    context.fill();
   }
   context.restore();
 }
@@ -201,7 +247,7 @@ function cameraLoop(now) {
         const result = landmarker.detectForVideo(video, now);
         const landmarks = result.faceLandmarks?.[0];
         if (landmarks) {
-          drawFace(landmarks);
+          drawFace(landmarks, now);
           updateFaceStatus(landmarks, now);
         } else {
           drawNoFace();
